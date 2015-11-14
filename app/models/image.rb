@@ -10,6 +10,6 @@ class Image < ActiveRecord::Base
 
   validates_inclusion_of :file_type, in: ["png", "gif", "jpeg", "jpg"],
     message: "%{value} must be one of: 'png', 'gif', or 'jpeg/jpg'."
-  validates_presence_of :journey_id, :file_name, :url
+  validates_presence_of :journey_id, :file_name
   
 end
