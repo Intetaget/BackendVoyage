@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  file_name: MyString
+  content_type: MyString
+  url: MyString
+  file_size: 1
+  journey_id: 1
+
+two:
+  title: MyString
+  file_name: MyString
+  content_type: MyString
+  url: MyString
+  file_size: 1
+  journey_id: 1
