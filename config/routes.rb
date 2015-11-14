@@ -43,7 +43,7 @@ Rails.application.routes.draw do
   post "journeys", to: "journeys#create"
   patch "journeys/:journey_id", to: "journeys#update"
   get "journeys/:journey_id", to: "journeys#show"
-  delete "journeys/:journey_id", to: "journey#destroy"
+  delete "journeys/:journey_id", to: "journssy#destroy"
 
   ## Image Routes
 
