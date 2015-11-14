@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151114172334) do
+ActiveRecord::Schema.define(version: 20151114193442) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,20 +24,15 @@ ActiveRecord::Schema.define(version: 20151114172334) do
   end
 
   create_table "images", force: :cascade do |t|
-    t.string   "title"
-    t.string   "file_name",  null: false
-    t.string   "file_type"
-    t.integer  "file_size"
-    t.integer  "journey_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer  "journey_id",      null: false
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.string   "photo_file_name"
   end
 
   create_table "journeys", force: :cascade do |t|
     t.string   "title",       null: false
     t.string   "description", null: false
-    t.date     "start"
-    t.date     "end"
     t.string   "region",      null: false
     t.integer  "user_id",     null: false
     t.datetime "created_at",  null: false
