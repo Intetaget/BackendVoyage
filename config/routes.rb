@@ -39,11 +39,11 @@ Rails.application.routes.draw do
 
   ## Journey Routes
 
-  get "journeys", to: "journeys#index"
+  # get "journeys", to: "journeys#index"
   post "journeys", to: "journeys#create"
-  patch "journeys/:journey_id", to: "journeys#update"
-  get "journeys/:journey_id", to: "journeys#show"
-  delete "journeys/:journey_id", to: "journssy#destroy"
+  # patch "journeys/:journey_id", to: "journeys#update"
+  # get "journeys/:journey_id", to: "journeys#show"
+  # delete "journeys/:journey_id", to: "journssy#destroy"
 
   ## Image Routes
 
