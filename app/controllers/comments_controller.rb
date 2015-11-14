@@ -1,7 +1,8 @@
-class CommentController < ApplicationController
+class CommentsController < ApplicationController
 
   def index
-    @immages = Immage.page(params[:page]).per(10)
+    image = Image.find(params[:image_id])
+    @comments = image.comments
     render :index
   end
 
