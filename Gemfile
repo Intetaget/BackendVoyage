@@ -26,6 +26,13 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # Kaminari for pagination
 gem 'kaminari'
 
+# Add support for file uploads with paperclip
+gem 'paperclip', '~> 4.3'
+
+# Use foreman to setup environment variables and run the app.
+## (Alternatives include: foreman, dotenv, figaro)
+gem 'foreman'
+
 # AWS Storage
 gem 'aws-sdk-v1'
 
