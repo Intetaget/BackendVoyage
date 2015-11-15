@@ -1,7 +1,7 @@
 class JourneysController < ApplicationController
 
   def index
-    @journeys = current_user.journeys
+    @journeys = Journey.all
     if @journeys
       render "index.json.jbuilder"
     else
@@ -15,7 +15,8 @@ class JourneysController < ApplicationController
     if current_user
       @journey = current_user.journeys.create(title: params[:title],
                                               description: params[:description],
-                                              region: params[:region])
+                                              region: params[:region],
+                                              photo: params[:photo])
       render "create.json.jbuilder", status: :created 
     else
       render json: { error: "You must be logged in to create a new journey." },
@@ -29,7 +30,8 @@ class JourneysController < ApplicationController
     if @journey
       @journey.update(title: params[:title],
                       description: params[:description],
-                      region: params[:region])
+                      region: params[:region],
+                      photo: params[:photo])
       render "update.json.jbuilder", status: :accepted
     else
       render json: { error: "The journey you've requested does not exist." },
