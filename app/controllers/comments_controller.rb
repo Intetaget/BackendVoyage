@@ -2,35 +2,50 @@ class CommentsController < ApplicationController
 
   def index
     image = Image.find(params[:image_id])
-    @comments = image.comments
-    render :index
+    if image
+      @comments = image.comments
+      render "index.json.jbuilder", status: :ok
+    else
+      render json: { error: "The image you've requested has no comments." },
+        status: :not_found
+        # status 404
+    end
   end
 
   def create
     image = Image.find(params[:image_id])
-    if image
+    if image && current_user
       @comment = image.comments.create(description: params[:description])
       render "create.json.jbuilder", status: :created
-        # status 201
     else
       render json: { error: "The image you've requested does not exist." },
         status: :not_found
-          # status 404
+        # status 404
     end
   end
 
-  # def edit
-  #   comment = Comment.find(:params[picture_id])
-  #   render :edit
-  # end
+  def update
+    @comment = Comment.find(params[:comment_id])
+    if @comment 
+      @comment.update(description: params[:description])
+      render "update.json.jbuilder", status: :accepted
+      # can't authenticate user because comments don't have a user_id --> needs to be resolved
+    else 
+      render json: { error: "The comment you've requested does not exist." },
+        status: :not_found
+        # status 404
+    end
+  end
 
-  # def update
-  #   comment = Comment.find(params[:id], picture_id: params[:id])
-  #   comment.update(body: params[:body], [:id], picture_id: params[:id])
-  # end
-
-  # def destroy
-  #   comment = Comment.find(params[:id])
-  #   comment.destroy(params[:id])
-  # end
+  def destroy
+    comment = Comment.find(params[:comment_id])
+    if comment
+      comment.destroy
+      render plain: "The comment was deleted successfully."
+    else
+      render json: { error: "The comment you've requested does not exist." },
+        status: :not_found
+        # status 404
+    end
+  end
 end
