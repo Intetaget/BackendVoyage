@@ -31,7 +31,8 @@ class JourneysController < ApplicationController
       @journey.update(title: params[:title],
                       description: params[:description],
                       region: params[:region],
-                      photo: params[:photo])
+                      photo: params[:photo]
+                      user_id: current_user.id)
       render "update.json.jbuilder", status: :accepted
     else
       render json: { error: "The journey you've requested does not exist." },
