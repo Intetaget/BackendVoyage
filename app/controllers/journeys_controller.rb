@@ -5,7 +5,7 @@ class JourneysController < ApplicationController
     if @journeys
       render "index.json.jbuilder"
     else
-      render json: { error: "#{current_user.username} has no journeys to display." }, 
+      render json: { error: "There are no journeys to display." }, 
         status: :not_found
           # status 404
     end
@@ -13,10 +13,10 @@ class JourneysController < ApplicationController
 
   def create
     if current_user
-      @journey = current_user.journeys.create(title: params[:title],
-                                              description: params[:description],
-                                              region: params[:region],
-                                              photo: params[:photo])
+      @journey = Journey.create(title: params[:title],
+                                description: params[:description],
+                                region: params[:region],
+                                photo: params[:photo])
       render "create.json.jbuilder", status: :created 
     else
       render json: { error: "You must be logged in to create a new journey." },
@@ -26,7 +26,7 @@ class JourneysController < ApplicationController
   end
 
   def update
-    @journey = current_user.journeys.find(params[:journey_id])
+    @journey = Journey.find(params[:journey_id])
     if @journey
       @journey.update(title: params[:title],
                       description: params[:description],
