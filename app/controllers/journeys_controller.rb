@@ -53,7 +53,7 @@ class JourneysController < ApplicationController
 
   def destroy
     journey = current_user.journeys.find(params[:journey_id])
-    if journey
+    if journey.user_id = current_user.id
       journey.destroy
       render plain: "The journey has been deleted.", status: :accepted  
     else
