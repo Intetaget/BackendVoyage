@@ -14,7 +14,7 @@ class CommentsController < ApplicationController
 
   def create
     image = Image.find(params[:image_id])
-    if image && current_user
+    if image 
       @comment = image.comments.create(description: params[:description])
       render "create.json.jbuilder", status: :created
     else
