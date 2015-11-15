@@ -397,4 +397,127 @@ If the request was unsuccessful, you will get:
 
 	```
 	{ error: "The journey you've requested does not exist." }
+
 	```
+## Comment Methods
+###Comments Index 
+
+Users may pull up all the comments listed on the immage.
+
+**URL** "images/:image_id/comments"
+
+**Method** get 
+
+**Request**
+
+*Required* 
+
+***HEADERS*** : Access-Key = string
+
+| Parameter        | Type           | Description  |
+| ------------- |:-------------:|:----- |
+| immage_id  | integer | *(Required)*||
+
+**Response**
+
+If successful, you will receive:
+
+```
+a comment	:-}
+```	
+Status Code: 201 - Created	
+	
+
+If unsuccessful, you will receive:
+
+	Status Code: 404 - Not found
+
+```
+
+Status Code: 201 - Created	
+	
+
+```
+
+
+### Create Comment
+
+Authenticated users can create Coments. 
+
+
+**URL** "journeys/:journey_id/images"
+**Method** POST
+
+
+***REQUIRED IN HEADERS*** : Access-Token = string
+
+
+| Parameter        | Type           | Description  |
+| ------------- |:-------------:|:----- |
+| journey_id| Integer | *(Required)* | 
+| photo | file |.jpg .jpeg etc|
+|description|t.string|Photo description			|
+
+
+**Response**
+?
+
+
+
+### Update
+
+A user is able to update comments
+
+**URL** "comments/:comment_id"
+
+**Method** PATCH
+
+
+	
+
+| Parameter        | Type           | Description  |
+| ------------- |:-------------:|:----- |
+| comment_id  | integer | *(Required)*  |
+
+**Response**
+
+If successful, you will receive:
+
+	a changed comment
+	
+
+If failfull, you will get:
+
+	json: { error: "The comment you've requested does not exist." },
+        status: :not_found
+        
+        
+ 
+	
+### Delete
+
+A user is able to delete comments
+
+**URL** ""comments/:comment_id""
+
+**Method** DESTROY
+
+
+	
+
+| Parameter        | Type           | Description  |
+| ------------- |:-------------:|:----- |
+| comment_id  | integer | *(Required)*  |
+
+**Response**
+
+If successful, you will receive:
+
+	"The comment was deleted successfully."
+	
+
+If failfull, you will get:
+
+	error 404
+
+	"The comment you've requested does not exist." } 
