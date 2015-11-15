@@ -1,23 +1,23 @@
-# Voyage API
+# Backend Voyage api
 
-A simple travel app to document your adventures!
+Welcome to the BackendVoyage API docs, hope you find what you are looking for here!
 
 ## User Methods
 
-### Signup/Registration
+### Signup
 
-Register as a user to allow for creating new entries on the site.
+Register a new user and receive back the new user's access key and user id.
 
-**Route** /users/signup
+**URL** /users/signup
 
-**Method** GET
+**Method** get
 
 **Request**
 	
 
 | Parameter        | Type           | Description  |
 | ------------- |:-------------:|:----- |
-| username | String | *(Required)*  Must be unique |
+| username  | String | *(Required)*  unique username |
 | fullname      | String      |  *(Required)*   User's first and last name |
 | email | String      | *(Required)*   User's email (must follow format text@text.text) |
 | password | String | *(Requred)* User's password
@@ -32,7 +32,7 @@ If successful, you will receive:
 ```json
 	{ "user": 
 			{ "user_id": 1,
-			  "access_key": "0be09d37d1d5e61f06b4a10133492003"
+			  "access_key": "biglongaccesskeyhere"
 			}
 	}
 			
@@ -50,11 +50,11 @@ If unsuccessful, you will receive:
 	}
 ```
 
-### Login ###
+### Registration ###
 
-User can login to retrieve her access token and account email address.
+Users can get their access_key by sending a username/password.
 
-**Route** /users/login
+**URL** /users/login
 
 **Method** POST
 
@@ -62,7 +62,7 @@ User can login to retrieve her access token and account email address.
 
 | Parameter        | Type           | Description  |
 | ------------- |:-------------:|:----- |
-| username | String | *(Required)* Existing user's username | 
+| username| String | *(Required)* Existing user's username | 
 | password | String | *(Required)* User's password | 
 
 **Response**
@@ -71,11 +71,11 @@ If successful, you will receive:
 
 	Status Code: 202 - Accepted
 	
-```
+```json
 	{ "user": 
 			{ "user_id": 1,
-			  "access_key": "0be09d37d1d5e61f06b4a10133492003",
-			  "email": "myusername"
+			  "access_key": "biglongaccesskeyhere",
+			  "username": "myusername"
 			}
 	}
 			
@@ -85,58 +85,26 @@ If unsuccessful, you will receive:
 
 	Status Code: 401 - Unauthorized
 	
-```
+```json
 	{ "errors": [ 
-				"Username or password incorrect. Please try again."
+				"User or password incorrect. So sorry you aren't getting in!"
 				] 
 	}
 ```
 
-## Images
+ If unsuccessful, you will receive:
 
-### Upload a new image
+	Status Code: 422 - Unprocessable Entity
 
-Authenticated users can create images. 
+### List Images
 
-**Route** "journeys/:journey_id/images"
+Authenticated users can list ALL images available.
 
-**Method** POST
-
-***REQUIRED IN HEADERS*** : Access-Token = string
-
-**Request**
-
-| Parameter        | Type           | Description  |
-| ------------- |:-------------:|:----- |
-| journey_id | Integer | *(Required)* | 
-| photo | file |.jpg .jpeg etc|
-|description|t.string|Photo description			|
-
-**Response**
-
-If successful, you will receive:
-
-	Status Code: 201 - Created
-	
-```
-	{ "image": 
-			{ "id": 2
-				"journey_id": 1,
-			  "photo_file_name": "terrific.jpeg",
-			  "description": "my awesome trip"
-			}
-	}			
-```
-
-If unsuccessful, you will receive:
-
-	Status Code: 404 - Unprocessable Entity
-
-### Get an index of images
-
-**Route** /"journeys/:journey_id/images"
+**URL** /"journeys/:journey_id/images", to: "images#index"
 
 **Method** GET
+
+***REQUIRED IN HEADERS*** : ....
 
 | Parameter        | Type           | Description  |
 | ------------- |:-------------:|:----- |
@@ -152,26 +120,20 @@ If successful, you will receive:
 If unsuccessful, you will receive:
 
 	Status Code: 404 - Not Found
+	```
 
-	```
-	{ "image": 
-			{ "id": 2
-				"journey_id": 1,
-			  "photo_file_name": "terrific.jpeg",
-			  "description": "my awesome trip"
-			}
-	}		
-	```
 
 ### Delete Image###
 
 Authenticated users can delete an image that they have created.
 
-**Route** "images/:image_id", to: "images#destroy"
+**URL** "images/:image_id", to: "images#destroy"
 
 **Method** DESTROY
 
-***HEADERS*** : Access-Key = String
+
+
+***HEADERS*** : Access-Key = string
 
 
 | Parameter        | Type           | Description  |
@@ -185,9 +147,8 @@ If successful, you will receive:
 
 	Status Code: 200 - OK
 	
-```
-		{
-			"The image has been deleted successfully."
+```json
+		{"success":	"The image has been deleted successfully."
 		}	
 ```
 
@@ -195,19 +156,19 @@ If unsuccessful, you will receive:
 
 	Status Code: 401 - Not Authorized
 	
-```
+```json
 	{ "errors": [ 
 				"You're not authorized to delete this image"
 				] 
 ```
 
-## Journeys
+## Journey's Methods
 
 ### Index
 
-Retrieve a list of all the user's journeys
+A user is able to view all other users journeys
 
-**Route** "/journeys"
+**URL** "journeys", to: "journeys#index"
 
 **Method** GET
 
@@ -227,75 +188,21 @@ Retrieve a list of all the user's journeys
 If successful, you will receive:
 
 	Status Code: 201 - Created
+	
 
-```
-  "journeys": [
-    {
-      "id": 2,
-      "title": "My first trip",
-      "description": "Trip to Uruguay",
-      "region": "South America",
-      "user_id": 13,
-      "photo_url": "http://voyage-prod.s3.amazonaws.com/journeys/photos/000/000/002/original/uruguay.jpg"
-    }
-   ]
- ```
+If failfull, you will get:
 
-If the request fails, you will get:
-
-```
-{ error: "There are no journeys to display." }
-```
-
-	Status Code: 404 - Not Found
+	Status Code: 422 - Unprocessable Entity
 	
 	
 ### Create
 
-Create a new journey
+A user is able to create journeys
 
-**Route** "/journeys"
+**URL** "journeys", to: "journeys#index"
 
 **Method** GET
 
-	
-
-| Parameter        | Type           | Description  |
-| ------------- |:-------------:|:----- |
-| title  | t.string | *(Required)*  |
-| description      | t.string      |  *(Required)*    |
-| region | t.string | *(Required)* |
-| user_id |integer	 |*(Required)*
-
-**Response**
-
-If successful, you will receive:
-
-	Status Code: 201 - Created
-	
-	```
-	{	"journey":
-      "id": 3,
-      "title": "My second trip",
-      "description": "Trip to Ireland",
-      "region": "Europe",
-      "user_id": 13,
-      "photo_url": "http://voyage-prod.s3.amazonaws.com/journeys/photos/000/000/003/original/Irish-ruins.jpg"
-    }
-    ```
-
-If the request fails, you will get:
-
-	Status Code: 402 - Unauthorized
-
-	
-### Update
-
-Update an existing journey
-
-**Route** "journeys/:journey_id"
-
-**Method** PATCH
 
 	
 
@@ -310,32 +217,52 @@ Update an existing journey
 
 If successful, you will receive:
 
-	Status Code: 202 - Accepted
+	Status Code: 201 - Created
 	
-	```
-	{	"journey":
-      "id": 3,
-      "title": "My second trip",
-      "description": "Trip to Ireland",
-      "region": "Europe",
-      "user_id": 13,
-      "photo_url": "http://voyage-prod.s3.amazonaws.com/journeys/photos/000/000/003/original/Irish-ruins.jpg"
-    }
-    ```
 
-If the request fails, you will get:
+If failfull, you will get:
 
 	Status Code: 422 - Unprocessable Entity
 	
-	```
-	{ error: "The journey you've requested does not exist." }
-	```
+	patch "journeys/:journey_id", to: "journeys#update"
+	
+	
+	
+### Update
+
+A user is able to update journeys
+
+**URL** "journeys", to: "journeys#index"
+
+**Method** PATCH
+
+
+	
+
+| Parameter        | Type           | Description  |
+| ------------- |:-------------:|:----- |
+| title  | t.string | *(Required)*  |
+| description      | t.string      |  *(Required)*    |
+| region | t.string | *(Required)* |
+|user_id |integer	 |*(Required)*
+
+**Response**
+
+If successful, you will receive:
+
+	Status Code: 201 - Created
+	
+
+If failfull, you will get:
+
+	Status Code: 422 - Unprocessable Entity
+	
 	
 ### Show
 
-Find a specific journey
+A user is able to show journeys
 
-**Route** journeys/:journey_id"
+**URL** journeys/:journey_id", to: "journeys#show
 
 **Method** GET
 
@@ -348,58 +275,157 @@ Find a specific journey
 
 If successful, you will receive:
 
-	Status Code: 200 - OK
+	Status Code: 201 - Created
 	
-	```
-	{	"journey":
-      "id": 3,
-      "title": "My second trip",
-      "description": "Trip to Ireland",
-      "region": "Europe",
-      "user_id": 13,
-      "photo_url": "http://voyage-prod.s3.amazonaws.com/journeys/photos/000/000/003/original/Irish-ruins.jpg"
-    }
-    ```
 
-If the request is unsuccessful, you will get:
+If failfull, you will get:
 
-	Status Code: 404 - Not Found
-
-	```
-	{ error: "The journey you've requested does not exist." }
-	```
+	Status Code: 422 - Unprocessable Entity
 	
 ### Delete
 
-Delete an existing journey
+A user is able to delete journeys
 
-**Route** journeys/:journey_id"
+**URL** journeys/:journey_id", to: "journeys#destroy"
 
 **Method** DESTROY
+
 
 | Parameter        | Type           | Description  |
 | ------------- |:-------------:|:----- |
 | journey_id  | integer | *(Required)*  |
 
+
+
+
+## Comment Methods
+###Comments Index 
+
+Users may pull up all the comments listed on the immage.
+
+**URL** "images/:image_id/comments"
+
+**Method** get 
+
+**Request**
+
+*Required* 
+
+***HEADERS*** : Access-Key = string
+
+| Parameter        | Type           | Description  |
+| ------------- |:-------------:|:----- |
+| immage_id  | integer | *(Required)*||
+
 **Response**
 
 If successful, you will receive:
 
-	Status Code: 202 - Accepted
+```
+a comment	:-}
+```	
+Status Code: 201 - Created	
 	
-	{
-		"The journey has been deleted."
-	}
 
-If the request was unsuccessful, you will get:
+If unsuccessful, you will receive:
 
-	Status Code: 404 - Not Found
+	Status Code: 404 - Not found
 
-	```
-	{ error: "The journey you've requested does not exist." }
-	```
+```
+
+Status Code: 201 - Created	
 	
+
+```
+
+
+### Create Comment
+
+Authenticated users can create Coments. 
+
+
+**URL** "journeys/:journey_id/images"
+**Method** POST
+
+
+***REQUIRED IN HEADERS*** : Access-Token = string
+
+
+| Parameter        | Type           | Description  |
+| ------------- |:-------------:|:----- |
+| journey_id| Integer | *(Required)* | 
+| photo | file |.jpg .jpeg etc|
+|description|t.string|Photo description			|
+
+
+**Response**
+?
+
+
+
+### Update
+
+A user is able to update comments
+
+**URL** "comments/:comment_id"
+
+**Method** PATCH
+
+
 	
+
+| Parameter        | Type           | Description  |
+| ------------- |:-------------:|:----- |
+| comment_id  | integer | *(Required)*  |
+
+**Response**
+
+If successful, you will receive:
+
+	a changed comment
+	
+
+If failfull, you will get:
+
+	json: { error: "The comment you've requested does not exist." },
+        status: :not_found
+        
+        
+ 
+	
+### Delete
+
+A user is able to delete comments
+
+**URL** ""comments/:comment_id""
+
+**Method** DESTROY
+
+
+	
+
+| Parameter        | Type           | Description  |
+| ------------- |:-------------:|:----- |
+| comment_id  | integer | *(Required)*  |
+
+**Response**
+
+If successful, you will receive:
+
+	"The comment was deleted successfully."
+	
+
+If failfull, you will get:
+
+	error 404
+
+	"The comment you've requested does not exist." } 
+
+
+
+
+
+
 
 	
 
