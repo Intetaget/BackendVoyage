@@ -39,11 +39,11 @@ Rails.application.routes.draw do
 
   ## Journey Routes
 
-  # get "journeys", to: "journeys#index"
+  get "journeys", to: "journeys#index"
   post "journeys", to: "journeys#create"
-  # patch "journeys/:journey_id", to: "journeys#update"
-  # get "journeys/:journey_id", to: "journeys#show"
-  # delete "journeys/:journey_id", to: "journssy#destroy"
+  patch "journeys/:journey_id", to: "journeys#update"
+  get "journeys/:journey_id", to: "journeys#show"
+  delete "journeys/:journey_id", to: "journeys#destroy"
 
   ## Image Routes
 
@@ -54,8 +54,8 @@ Rails.application.routes.draw do
 
   ## Comment Routes
 
-  get "journeys/:journey_id/comments", to: "comments#index"
-  post "journeys/:journey_id/comments", to: "comments#create"
+  get "images/:image_id/comments", to: "comments#index"
+  post "images/:image_id/comments", to: "comments#create"
   patch "comments/:comment_id", to: "comments#update"
   delete "comments/:comment_id", to: "comments#destroy"
 
