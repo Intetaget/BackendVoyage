@@ -16,12 +16,7 @@ class JourneysController < ApplicationController
                               description: params[:description],
                               region: params[:region],
                               photo: params[:photo])
-      render "create.json.jbuilder", status: :created 
-    else
-      render json: { error: "You must be logged in to create a new journey." },
-      status: :unauthorized
-        # status 404
-    end
+      render "create.json.jbuilder", status: :created
   end
 
   def update
