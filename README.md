@@ -50,7 +50,7 @@ If unsuccessful, you will receive:
 	}
 ```
 
-### Login ###
+### Registration ###
 
 Users can get their access_key by sending a username/password.
 
@@ -92,27 +92,25 @@ If unsuccessful, you will receive:
 	}
 ```
 
-## Deck Methods
+## Image Methods
 
-### New Deck
+### New Image
 
-Authenticated users can create a new deck. 
+Authenticated users can create images. 
 
-Note: Users cannot have duplicate titles for decks they own.  However, two users can have decks with the same title.
 
-**URL** /decks
+**URL** "journeys/:journey_id/images", to: "images#create"
 
 **Method** POST
 
-**Request**
 
-*Required* 
-
-***HEADERS*** : Access-Key = string
+***REQUIRED IN HEADERS*** : Access-Token = string
 
 | Parameter        | Type           | Description  |
 | ------------- |:-------------:|:----- |
-| title| String | *(Required)* Deck title | 
+| journey_id| Integer | *(Required)* | 
+| photo | file |.jpg .jpeg etc|
+|description|t.string|Photo description			|
 
 
 **Response**
@@ -122,290 +120,233 @@ If successful, you will receive:
 	Status Code: 201 - Created
 	
 ```json
-	{ "deck": 
-			{ "user_id": 1,
-			  "id": 3,
-			  "owner": "terric",
-			  "title": "my awesome deck"
+	{ "images": 
+			{ "journey_id": 1,
+			  "photo_file_name": "terrific.jpeg",
+			  "description": "my awesome trip"
 			}
-	}
-			
+	}			
 ```
 
 If unsuccessful, you will receive:
 
 	Status Code: 422 - Unprocessable Entity
-	
-```json
-	{ "errors": [ 
-				"Title has already been taken"
-				] 
-	}
-```
 
-### List Decks
+### List Images
 
-Authenticated users can list ALL decks available or only decks that they have created.
+Authenticated users can list ALL images available.
 
-**URL** /decks
+**URL** /"journeys/:journey_id/images", to: "images#index"
 
 **Method** GET
 
-**Request**
-
-*Required* 
-
-***HEADERS*** : Access-Key = string
+***REQUIRED IN HEADERS*** : ....
 
 | Parameter        | Type           | Description  |
 | ------------- |:-------------:|:----- |
-| owner| String | *(Required)* 'all' for all decks or 'mine' for decks created by the authenticated user | 
+| journey_id| integer | *(Required)* | 
 
 **Response**
 
 If successful, you will receive:
 
 	Status Code: 200 - OK
-	
-```json
-		{"decks":	[
-						{ 	
-						"id":1,
-						"title":"test title",
-						"owner":"mans"	
-						},
-						{	
-						"id":2,
-						"title":"cats",
-						"owner":"terri"	
-						}
-					]
-		}	
-```
+
 
 If unsuccessful, you will receive:
 
 	Status Code: 404 - Not Found
+	```
+
+
+### Delete Image###
+
+Authenticated users can delete an image that they have created.
+
+**URL** "images/:image_id", to: "images#destroy"
+
+**Method** DESTROY
+
+
+
+***HEADERS*** : Access-Key = string
+
+
+| Parameter        | Type           | Description  |
+| ---------------- |----------------|------------- |
+| image_id| Integer | Required | 
+
+
+**Response**
+
+If successful, you will receive:
+
+	Status Code: 200 - OK
+	
+```json
+		{"success":	"The image has been deleted successfully."
+		}	
+```
+
+If unsuccessful, you will receive:
+
+	Status Code: 401 - Not Authorized
 	
 ```json
 	{ "errors": [ 
-				"User 'cats' not found"
+				"You're not authorized to delete this image"
 				] 
 ```
 
-### Edit Deck
+## Journey's Methods
 
-Authenticated users can edit a deck that they have created.
+### Index
 
-**URL** /decks/:id
+A user is able to view all other users journeys
+
+**URL** "journeys", to: "journeys#index"
+
+**Method** GET
+
+**Request**
+	
+
+| Parameter        | Type           | Description  |
+| ------------- |:-------------:|:----- |
+| user_id  | integer | *(Required)*  |
+| title      | t.string      |  *(Required)*    |
+| description | String      | *(Required)* journey description |
+| region | t.string | *(Required)* |
+|
+
+**Response**
+
+If successful, you will receive:
+
+	Status Code: 201 - Created
+	
+
+If failfull, you will get:
+
+	Status Code: 422 - Unprocessable Entity
+	
+	
+### Create
+
+A user is able to create journeys
+
+**URL** "journeys", to: "journeys#index"
+
+**Method** GET
+
+
+	
+
+| Parameter        | Type           | Description  |
+| ------------- |:-------------:|:----- |
+| title  | t.string | *(Required)*  |
+| description      | t.string      |  *(Required)*    |
+| region | t.string | *(Required)* |
+|user_id |integer	 |*(Required)*
+
+**Response**
+
+If successful, you will receive:
+
+	Status Code: 201 - Created
+	
+
+If failfull, you will get:
+
+	Status Code: 422 - Unprocessable Entity
+	
+	patch "journeys/:journey_id", to: "journeys#update"
+	
+	
+	
+### Update
+
+A user is able to update journeys
+
+**URL** "journeys", to: "journeys#index"
 
 **Method** PATCH
 
-**Request**
 
-*Required* 
-
-***HEADERS*** : Access-Key = string
+	
 
 | Parameter        | Type           | Description  |
 | ------------- |:-------------:|:----- |
-| id| Integer | *(Required)* Deck ID that you wish to edit.  Must be a deck created by the Authenticated User | 
-| title | String | *(Required)* New deck title.  Cannot be blank. |
+| title  | t.string | *(Required)*  |
+| description      | t.string      |  *(Required)*    |
+| region | t.string | *(Required)* |
+|user_id |integer	 |*(Required)*
 
 **Response**
 
 If successful, you will receive:
 
-	Status Code: 200 - OK
+	Status Code: 201 - Created
 	
-```json
-		{"success":	"Deck updated successfully"
-		}	
-```
 
-If unsuccessful, you will receive:
-
-	Status Code: 401 - Not Authorized
-	
-```json
-	{ "errors": [ 
-				"That deck doesn't belong to you!"
-				] 
-```
+If failfull, you will get:
 
 	Status Code: 422 - Unprocessable Entity
 	
-```json
-	{ "errors": [ 
-				"Title cannot be blank!"
-				] 
-```
+	
+### Show
 
-### Delete Deck
+A user is able to show journeys
 
-Authenticated users can delete a deck that they have created.  All cards created for that deck will also be deleted.
+**URL** journeys/:journey_id", to: "journeys#show
 
-**URL** /decks/:id
+**Method** GET
 
-**Method** DELETE
-
-**Request**
-
-*Required* 
-
-***HEADERS*** : Access-Key = string
 
 | Parameter        | Type           | Description  |
 | ------------- |:-------------:|:----- |
-| id| Integer | *(Required)* Deck ID that you wish to edit.  Must be a deck created by the Authenticated User | 
+| journey_id  | integer | *(Required)*  |
 
 **Response**
 
 If successful, you will receive:
 
-	Status Code: 200 - OK
+	Status Code: 201 - Created
 	
-```json
-		{"success":	"Deck deleted successfully"
-		}	
-```
 
-If unsuccessful, you will receive:
-
-	Status Code: 401 - Not Authorized
-	
-```json
-	{ "errors": [ 
-				"That deck doesn't belong to you!"
-				] 
-```
-
-***Card Methods***
-
-###Create
-
-Users can create new cards within the deck.  
-No card can have the same front or back.
-
-**URL** /decks/:id/cards
-
-**Method** post 
-
-**Request**
-
-*Required* 
-
-***HEADERS*** : Access-Key = string
-
-| Parameter        | Type           | Description  |
-| ------------- |:-------------:|:----- | 
-| front  | String | *(Required)*|Front of card|
-| back   | String | *(Required)*|Back of card|
-
-**Response**
-
-If successful, you will receive:
-
-```json
-	{"card":
-			{"id":6,
-			"front":"Flashy",
-			"back":"Cardy","
-			deck_id":1}}
-	}
-```	
-Status Code: 201 - Created	
-
-
-If unsuccessful, you will receive:
+If failfull, you will get:
 
 	Status Code: 422 - Unprocessable Entity
 	
-```json
-	{ "errors": [ 
-				"Front or backside has already
-				 been entered"
-				] 
-	}
-```
-###Edit
+### Delete
 
-Users can delete cards within the deck.
+A user is able to delete journeys
 
-**URL** /cards/:id/
+**URL** journeys/:journey_id", to: "journeys#destroy"
 
-**Method** put 
+**Method** DESTROY
 
-**Request**
-
-*Required* 
-
-***HEADERS*** : Access-Key = string
 
 | Parameter        | Type           | Description  |
 | ------------- |:-------------:|:----- |
-| front  | String | *(Required)*|Front of card|
-| back   | String | *(Required)*|Back of card|
+| journey_id  | integer | *(Required)*  |
 
 **Response**
 
 If successful, you will receive:
 
-{"card":{"id":1,"front":"hellp","back":"Cardy","deck_id":1}}
-
-###Index
-
-Users may pull up all the cards listed in the deck.
-
-**URL** /decks/:id/cards
-
-**Method** get 
-
-**Request**
-
-*Required* 
-
-***HEADERS*** : Access-Key = string
-
-| Parameter        | Type           | Description  |
-| ------------- |:-------------:|:----- |
-| front  | String | *(Required)*|Front of card|
-| back   | String | *(Required)*|Back of card|
-
-**Response**
-
-If successful, you will receive:
-
-```
-{"cards":[{"id":1,"front":"hello","back":"world"},{"id":4,"front":"hello","back":"world"},{"id":5,"front":"hello2","back":"world2"},{"id":6,"front":"Flashy","back":"Cardy"}]}
-	}
-```	
-Status Code: 201 - Created	
+	Status Code: 201 - Created
 	
 
-If unsuccessful, you will receive:
+If failfull, you will get:
 
 	Status Code: 422 - Unprocessable Entity
 	
-```json
-	{ "errors": [ 
-				"Front or backside has already
-				 been entered"
-				] 
-	}
-```
-
-Status Code: 201 - Created	
 	
 
-If unsuccessful, you will receive:
-
-	Status Code: 422 - Unprocessable Entity
 	
-```json
-	{ "errors": [ 
-				"Front or backside has already
-				 been entered"
-				] 
-	}
-```
+
+	
+
+
+
